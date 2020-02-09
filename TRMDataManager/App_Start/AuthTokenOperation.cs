@@ -11,7 +11,7 @@ namespace TRMDataManager.App_Start
     {
         public void Apply(SwaggerDocument swaggerDoc, SchemaRegistry schemaRegistry, IApiExplorer apiExplorer)
         {
-            swaggerDoc.paths.Add("/token", new PathItem
+            swaggerDoc.paths.Add("/Token", new PathItem
             {
                 post = new Operation
                 {
