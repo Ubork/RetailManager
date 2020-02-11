@@ -61,7 +61,13 @@
         <!-- Column 2-->
         <TextBlock Text="Cart" Grid.Row="1" Grid.Column="2" />
         <ListBox x:Name="Cart" Grid.Row="2" Grid.Column="2" 
-                 MinHeight="200" MinWidth="150"/>
+                 MinHeight="200" MinWidth="150">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding DisplayText}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <DockPanel Grid.Row="3" Grid.Column="2" MinWidth="250">
             <TextBlock Text="Subtotal: " Margin="0 0 15 0"/>
             <TextBlock x:Name="SubTotal" Text="0,00 Ft" TextAlignment="Right" />

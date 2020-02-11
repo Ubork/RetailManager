@@ -12,6 +12,10 @@ namespace TRMDesktopUI.ViewModels
 {
     public class SalesViewModel : Screen
     {
+		private BindingList<ProductModel> _products;
+		private BindingList<CartItemModel> _cart = new BindingList<CartItemModel>();
+		private int _itemQuantity = 1;
+		
 		IProductEndpoint _productEndpoint;
 		public SalesViewModel(IProductEndpoint productEndpoint)
 		{
@@ -30,10 +34,6 @@ namespace TRMDesktopUI.ViewModels
 			
 			Products = new BindingList<ProductModel>(productList);
 		}
-
-		private BindingList<ProductModel> _products;
-		private int _itemQuantity;
-		private BindingList<string> _cart;
 
 		public BindingList<ProductModel> Products
 		{
@@ -70,7 +70,7 @@ namespace TRMDesktopUI.ViewModels
 		}
 
 
-		public BindingList<string> Cart
+		public BindingList<CartItemModel> Cart
 		{
 			get { return _cart; }
 			set 
@@ -84,8 +84,12 @@ namespace TRMDesktopUI.ViewModels
 		{
 			get
 			{
-				// TODO replace with calculation
-				return "0,00 Ft";
+				decimal subTotal = 0;
+				foreach(var item in Cart) 
+				{
+					subTotal += (item.Product.RetailPrice * item.QuantityInCart);
+				}
+				return subTotal.ToString("C");
 			}
 		}
 
@@ -108,7 +112,28 @@ namespace TRMDesktopUI.ViewModels
 
 		public void AddToCart()
 		{
+			CartItemModel existingItem = Cart.FirstOrDefault(x => x.Product == SelectedProduct);
 
+			if (existingItem != null)
+			{
+				existingItem.QuantityInCart += ItemQuantity;
+
+				//HACK - there should be a better way to update qty for existingItem
+				Cart.Remove(existingItem);
+				Cart.Add(existingItem);
+			}
+			else
+			{
+				CartItemModel item = new CartItemModel
+				{
+					Product = SelectedProduct,
+					QuantityInCart = ItemQuantity
+				};
+				Cart.Add(item);
+			}
+			SelectedProduct.QuantityInStock -= ItemQuantity;
+			ItemQuantity = 1;
+			NotifyOfPropertyChange(() => SubTotal);
 		}
 
 		public bool CanAddToCart
@@ -143,6 +168,7 @@ namespace TRMDesktopUI.ViewModels
 		//		//{
 		//		//	output = true;
 		//		//}
+				//NotifyOfPropertyChange(() => SubTotal);
 		//		//return output;
 		//	}
 		//}
