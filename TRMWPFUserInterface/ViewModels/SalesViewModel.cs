@@ -15,7 +15,9 @@ namespace TRMDesktopUI.ViewModels
 		private BindingList<ProductModel> _products;
 		private BindingList<CartItemModel> _cart = new BindingList<CartItemModel>();
 		private int _itemQuantity = 1;
-		
+		private ProductModel _selectedProduct;
+		private CartItemModel _selectedItemToRemove;
+
 		IProductEndpoint _productEndpoint;
 		public SalesViewModel(IProductEndpoint productEndpoint)
 		{
@@ -45,8 +47,6 @@ namespace TRMDesktopUI.ViewModels
 			}
 		}
 
-		private ProductModel _selectedProduct;
-
 		public ProductModel SelectedProduct
 		{
 			get { return _selectedProduct; }
@@ -55,6 +55,17 @@ namespace TRMDesktopUI.ViewModels
 				_selectedProduct = value;
 				NotifyOfPropertyChange(() => SelectedProduct);
 				NotifyOfPropertyChange(() => CanAddToCart);
+			}
+		}
+
+		public CartItemModel SelectedItemToRemove
+		{
+			get { return _selectedItemToRemove; }
+			set 
+			{
+				_selectedItemToRemove = value;
+				NotifyOfPropertyChange(() => SelectedItemToRemove);
+				NotifyOfPropertyChange(() => CanRemoveFromCart);
 			}
 		}
 
@@ -154,24 +165,39 @@ namespace TRMDesktopUI.ViewModels
 
 		public void RemoveFromCart()
 		{
+			CartItemModel remainerOfItemToRemove = new CartItemModel
+			{
+				Product = SelectedItemToRemove.Product,
+				QuantityInCart = SelectedItemToRemove.QuantityInCart - ItemQuantity
+			};
 
+			if (ItemQuantity < SelectedItemToRemove.QuantityInCart)
+			{
+				Cart.Add(remainerOfItemToRemove);
+			}
+
+			ProductModel restockItem = Products.FirstOrDefault(x => x.Equals(SelectedItemToRemove.Product));
+			Cart.Remove(SelectedItemToRemove);
+			SelectedProduct.QuantityInStock += ItemQuantity;
+			ItemQuantity = 1;
+			NotifyOfPropertyChange(() => SubTotal);
 		}
 
-		//public bool CanRemoveFromCart
-		//{
-		//	get
-		//	{
-		//		bool output = false;
+		public bool CanRemoveFromCart
+		{
+			get
+			{
+				bool output = false;
 
-		//		//Make sure something is selected in the cart
-		//		//if ()
-		//		//{
-		//		//	output = true;
-		//		//}
-				//NotifyOfPropertyChange(() => SubTotal);
-		//		//return output;
-		//	}
-		//}
+				//Make sure something is in the cart
+				//Make sure the required item quantity is available
+				if (SelectedItemToRemove?.QuantityInCart >= ItemQuantity)
+				{
+					output = true;
+				}
+				return output;
+			}
+		}
 
 		public void CheckOut()
 		{
