@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TRMDesktopUI.Library.Models;
 using TRMDesktopUI.Library.Api;
+using TRMDesktopUI.Library.Helper;
 
 namespace TRMDesktopUI.ViewModels
 {
@@ -19,9 +20,11 @@ namespace TRMDesktopUI.ViewModels
 		private CartItemModel _selectedItemToRemove;
 
 		IProductEndpoint _productEndpoint;
-		public SalesViewModel(IProductEndpoint productEndpoint)
+		IConfigHelper _configHelper;
+		public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper)
 		{
 			_productEndpoint = productEndpoint;
+			_configHelper = configHelper;
 		}
 
 		protected override async void OnViewLoaded(object view)
@@ -95,29 +98,49 @@ namespace TRMDesktopUI.ViewModels
 		{
 			get
 			{
-				decimal subTotal = 0;
-				foreach(var item in Cart) 
-				{
-					subTotal += (item.Product.RetailPrice * item.QuantityInCart);
-				}
-				return subTotal.ToString("C");
+				return CalculateSubTotal().ToString("C");
 			}
+		}
+
+		private decimal CalculateSubTotal()
+		{
+			decimal subTotal = 0;
+			foreach (var item in Cart)
+			{
+				subTotal += (item.Product.RetailPrice * item.QuantityInCart);
+			}
+			return subTotal;
 		}
 
 		public string Tax
 		{
 			get
 			{
-				// TODO replace with calculation
-				return "0,00 Ft";
+				return CalculateTax().ToString("C");
 			}
 		}
+
+		private decimal CalculateTax()
+		{
+			decimal taxAmount = 0;
+			decimal taxRate = _configHelper.GetTaxRate();
+
+			foreach (var item in Cart)
+			{
+				if (item.Product.IsTaxable)
+				{
+					taxAmount += (item.Product.RetailPrice * item.QuantityInCart * taxRate * (decimal)0.01);
+				}
+			}
+			return taxAmount;
+		}
+
 		public string Total
 		{
 			get
 			{
-				// TODO replace with calculation
-				return "0,00 Ft";
+				decimal total = CalculateSubTotal() + CalculateTax();
+				return total.ToString("C");
 			}
 		}
 
@@ -145,6 +168,9 @@ namespace TRMDesktopUI.ViewModels
 			SelectedProduct.QuantityInStock -= ItemQuantity;
 			ItemQuantity = 1;
 			NotifyOfPropertyChange(() => SubTotal);
+			NotifyOfPropertyChange(() => Tax);
+			NotifyOfPropertyChange(() => Total);
+
 		}
 
 		public bool CanAddToCart
@@ -181,6 +207,8 @@ namespace TRMDesktopUI.ViewModels
 			SelectedProduct.QuantityInStock += ItemQuantity;
 			ItemQuantity = 1;
 			NotifyOfPropertyChange(() => SubTotal);
+			NotifyOfPropertyChange(() => Tax);
+			NotifyOfPropertyChange(() => Total);
 		}
 
 		public bool CanRemoveFromCart
