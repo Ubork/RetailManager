@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
 using TRMDesktopUI.Library.Models;
 using TRMDesktopUI.Library.Api;
 using TRMDesktopUI.Library.Helper;
@@ -21,10 +21,12 @@ namespace TRMDesktopUI.ViewModels
 
 		IProductEndpoint _productEndpoint;
 		IConfigHelper _configHelper;
-		public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper)
+		ISaleEndpoint _saleEndpoint;
+		public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper, ISaleEndpoint saleEndpoint)
 		{
 			_productEndpoint = productEndpoint;
 			_configHelper = configHelper;
+			_saleEndpoint = saleEndpoint;
 		}
 
 		protected override async void OnViewLoaded(object view)
@@ -174,6 +176,7 @@ namespace TRMDesktopUI.ViewModels
 			NotifyOfPropertyChange(() => SubTotal);
 			NotifyOfPropertyChange(() => Tax);
 			NotifyOfPropertyChange(() => Total);
+			NotifyOfPropertyChange(() => CanCheckOut);
 
 		}
 
@@ -213,6 +216,7 @@ namespace TRMDesktopUI.ViewModels
 			NotifyOfPropertyChange(() => SubTotal);
 			NotifyOfPropertyChange(() => Tax);
 			NotifyOfPropertyChange(() => Total);
+			NotifyOfPropertyChange(() => CanCheckOut);
 		}
 
 		public bool CanRemoveFromCart
@@ -230,26 +234,37 @@ namespace TRMDesktopUI.ViewModels
 				return output;
 			}
 		}
-
-		public void CheckOut()
+		public bool CanCheckOut
 		{
+			get
+			{
+				bool output = false;
 
+				//Make sure checkout is possible
+				if (Cart.Count > 0)
+				{
+					output = true;
+				}
+				return output;
+			}
 		}
 
-		//public bool CanCheckOut
-		//{
-		//	get
-		//	{
-		//		bool output = false;
+		public async Task CheckOut()
+		{
+			SaleModel sale = new SaleModel();
 
-		//		//Make sure checkout is possible
-		//		if (Cart.Count > 0)
-		//		{
-		//			output = true;
-		//		}
-		//		return output;
-		//	}
-		//}
+			foreach (var item in Cart)
+			{
+				sale.SaleDetails.Add(new SaleDetailModel
+				{
+					ProductId = item.Product.Id,
+					Quantity = item.QuantityInCart
+				});
+			}
+
+			await _saleEndpoint.PostSale(sale);
+		}
+
 
 	}
 }

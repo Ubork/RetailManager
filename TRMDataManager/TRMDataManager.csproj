@@ -221,6 +221,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\SaleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -229,6 +230,8 @@
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\SaleDetailModel.cs" />
+    <Compile Include="Models\SaleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -327,6 +330,10 @@
     <ProjectReference Include="..\TRMDataManager.Library\TRMDataManager.Library.csproj">
       <Project>{A6A43726-05C0-48E4-87D9-1E82E0E70F6D}</Project>
       <Name>TRMDataManager.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TRMDesktopUI.Library\TRMDesktopUI.Library.csproj">
+      <Project>{4F9C1600-9B6D-42BE-A5BE-FCB3FC978D66}</Project>
+      <Name>TRMDesktopUI.Library</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
