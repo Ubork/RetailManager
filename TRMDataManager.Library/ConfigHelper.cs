@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TRMDataManager.Library
 {
-    public class ConfigHelper
+    public static class ConfigHelper
     {
         public static decimal GetTaxRate()
         {
