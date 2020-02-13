@@ -250,7 +250,7 @@ namespace TRMDesktopUI.ViewModels
 			}
 		}
 
-		public async Task CheckOut()
+		public async void CheckOut()
 		{
 			SaleModel sale = new SaleModel();
 
