@@ -10,7 +10,7 @@ namespace TRMDesktopUI.Library.Models
     {
         public SaleModel()
         {
-            //SaleDetails = new List<SaleDetailModel>();
+            SaleDetails = new List<SaleDetailModel>();
         }
 
         public List<SaleDetailModel> SaleDetails { get; set; }

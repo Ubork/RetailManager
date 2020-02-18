@@ -15,7 +15,7 @@ namespace TRMDataManager.Controllers
     //[Authorize]
     public class SaleController : ApiController
     {
-        [HttpGet]
+        [HttpPost]
         public void Post(SaleModel sale)
         {
             SaleData data = new SaleData();

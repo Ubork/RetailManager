@@ -90,6 +90,17 @@ namespace TRMDesktopUI.ViewModels
             }
         }
 
+        private async void ResetSalesViewModel()
+        {
+            Cart = new BindingList<CartItemDisplayModel>();
+
+            await LoadProducts();
+
+            NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
+        }
 
         public BindingList<CartItemDisplayModel> Cart
         {
@@ -260,6 +271,8 @@ namespace TRMDesktopUI.ViewModels
             }
 
             await _saleEndpoint.PostSale(sale);
+
+            ResetSalesViewModel();
         }
 
 
