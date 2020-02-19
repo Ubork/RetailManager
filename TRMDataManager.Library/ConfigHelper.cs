@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 
 namespace TRMDataManager.Library
 {
@@ -13,7 +10,7 @@ namespace TRMDataManager.Library
         {
             string rateText = ConfigurationManager.AppSettings["taxRate"];
 
-            bool IsValidTaxRate = Decimal.TryParse(rateText, out decimal output);
+            bool IsValidTaxRate = Decimal.TryParse(rateText, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal output);
 
             if (!IsValidTaxRate)
             {
