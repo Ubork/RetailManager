@@ -13,6 +13,7 @@ namespace TRMDataManager.Controllers
     public class ProductController : ApiController
     {
         // GET api/values
+        [HttpGet]
         public List<ProductModel> Get()
         {
             ProductData data = new ProductData();
