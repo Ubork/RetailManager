@@ -10,9 +10,7 @@ namespace TRMDataManager.Library.DataAccess
         {
             SqlDataAccess sql = new SqlDataAccess("TRMData");
 
-            var p = new { Id = Id };
-
-            var output = sql.LoadData<UserModel>("dbo.spUserLookup", p);
+            var output = sql.LoadData<UserModel>("dbo.spUserLookup", new { Id = Id });
 
             return output;
         }

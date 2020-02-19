@@ -11,7 +11,7 @@ namespace TRMDataManager.Library.DataAccess
         {
             SqlDataAccess sql = new SqlDataAccess("TRMData");
 
-            var output = sql.LoadData<ProductModel>("dbo.spProduct_GetAll", new { });
+            var output = sql.LoadData<ProductModel>("dbo.spProduct_GetAll");
 
             return output;
         }
