@@ -20,7 +20,7 @@ namespace TRMDataManager.Library.Internal.DataAccess
             connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
         }
 
-        public List<T> LoadData<T>(string storedProcedure, object parameters)
+        public List<T> LoadData<T>(string storedProcedure, object parameters = null)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
