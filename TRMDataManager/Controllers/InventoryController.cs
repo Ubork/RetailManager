@@ -12,6 +12,7 @@ namespace TRMDataManager.Controllers
     [Authorize]
     public class InventoryController : ApiController
     {
+        [Authorize(Roles = "Manager,Admin")]
         [HttpGet]
         public List<InventoryModel> Get()
         {
@@ -19,6 +20,7 @@ namespace TRMDataManager.Controllers
             return data.GetInventory();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public void Post(InventoryModel item)
         {
