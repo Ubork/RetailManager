@@ -5,21 +5,23 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TRMDataManager.Library.Internal.DataAccess
 {
     internal class SqlDataAccess : IDisposable
     {
-        public string GetConnectionString(string name)
+        private IDbConnection _connection;
+        private IDbTransaction _transaction;
+
+        private readonly string connectionString;
+
+        public SqlDataAccess(string connectionStringName)
         {
-            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
         }
 
         public List<T> LoadData<T, U>(string storedProcedure, U parameters, string connectionStringName)
         {
-            string connectionString = GetConnectionString(connectionStringName);
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 List<T> rows = connection.Query<T>(storedProcedure, parameters,
@@ -31,7 +33,6 @@ namespace TRMDataManager.Library.Internal.DataAccess
 
         public void SaveData<T>(string storedProcedure, T parameters, string connectionStringName)
         {
-            string connectionString = GetConnectionString(connectionStringName);
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 connection.Execute(storedProcedure, parameters,
@@ -39,12 +40,9 @@ namespace TRMDataManager.Library.Internal.DataAccess
             }
         }
 
-        private IDbConnection _connection;
-        private IDbTransaction _transaction;
 
         public void StartTransaction(string connectionStringName)
         {
-            string connectionString = GetConnectionString(connectionStringName);
             _connection = new SqlConnection(connectionString);
             _connection.Open();
 

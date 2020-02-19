@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using TRMDataManager.Library.Internal.DataAccess;
 using TRMDataManager.Library.Models;
 
@@ -12,7 +8,7 @@ namespace TRMDataManager.Library.DataAccess
     {
         public List<InventoryModel> GetInventory()
         {
-            SqlDataAccess sql = new SqlDataAccess();
+            SqlDataAccess sql = new SqlDataAccess("TRMData");
 
             var output = sql.LoadData<InventoryModel, dynamic>("dbo.spInventory_GetAll", new { }, "TRMData");
 
@@ -21,7 +17,7 @@ namespace TRMDataManager.Library.DataAccess
 
         public void SaveInventoryRecord(InventoryModel item)
         {
-            SqlDataAccess sql = new SqlDataAccess();
+            SqlDataAccess sql = new SqlDataAccess("TRMData");
 
             sql.SaveData("dbo.spInventory_Insert", item, "TRMData");
         }
