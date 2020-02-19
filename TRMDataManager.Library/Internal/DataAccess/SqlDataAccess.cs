@@ -20,7 +20,7 @@ namespace TRMDataManager.Library.Internal.DataAccess
             connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
         }
 
-        public List<T> LoadData<T, U>(string storedProcedure, U parameters, string connectionStringName)
+        public List<T> LoadData<T, U>(string storedProcedure, U parameters)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
@@ -31,7 +31,7 @@ namespace TRMDataManager.Library.Internal.DataAccess
             }
         }
 
-        public void SaveData<T>(string storedProcedure, T parameters, string connectionStringName)
+        public void SaveData<T>(string storedProcedure, T parameters)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
@@ -41,7 +41,7 @@ namespace TRMDataManager.Library.Internal.DataAccess
         }
 
 
-        public void StartTransaction(string connectionStringName)
+        public void StartTransaction()
         {
             _connection = new SqlConnection(connectionString);
             _connection.Open();

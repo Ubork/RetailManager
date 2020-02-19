@@ -49,7 +49,7 @@ namespace TRMDataManager.Library.DataAccess
             {
                 try
                 {
-                    sql.StartTransaction("TRMData");
+                    sql.StartTransaction();
                     sql.SaveDataInTransaction("dbo.spSale_Insert", sale);
                     sale.Id = sql.LoadDataInTransaction<int, dynamic>("spSale_Lookup", new { sale.CashierId, sale.SaleDate }).FirstOrDefault();
                     foreach (var item in details)
@@ -70,7 +70,7 @@ namespace TRMDataManager.Library.DataAccess
         {
             SqlDataAccess sql = new SqlDataAccess("TRMData");
 
-            var output = sql.LoadData<SaleReportModel, dynamic>("dbo.spSale_SaleReport", new { }, "TRMData");
+            var output = sql.LoadData<SaleReportModel, dynamic>("dbo.spSale_SaleReport", new { });
 
             return output;
         }
