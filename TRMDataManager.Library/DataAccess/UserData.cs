@@ -12,7 +12,7 @@ namespace TRMDataManager.Library.DataAccess
 
             var p = new { Id = Id };
 
-            var output = sql.LoadData<UserModel, dynamic>("dbo.spUserLookup", p);
+            var output = sql.LoadData<UserModel>("dbo.spUserLookup", p);
 
             return output;
         }

@@ -70,7 +70,7 @@ namespace TRMDataManager.Library.DataAccess
         {
             SqlDataAccess sql = new SqlDataAccess("TRMData");
 
-            var output = sql.LoadData<SaleReportModel, dynamic>("dbo.spSale_SaleReport", new { });
+            var output = sql.LoadData<SaleReportModel>("dbo.spSale_SaleReport", new { });
 
             return output;
         }
