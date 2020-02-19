@@ -8,24 +8,22 @@ using TRMDataManager.Library.Models;
 
 namespace TRMDataManager.Library.DataAccess
 {
-    public class ProductData
+    public class InventoryData
     {
-        public List<ProductModel> GetProducts()
+        public List<InventoryModel> GetInventory()
         {
             SqlDataAccess sql = new SqlDataAccess();
 
-            var output = sql.LoadData<ProductModel, dynamic>("dbo.spProduct_GetAll", new { }, "TRMData");
+            var output = sql.LoadData<InventoryModel, dynamic>("dbo.spInventory_GetAll", new { }, "TRMData");
 
             return output;
         }
 
-        public ProductModel GetProductById(int productId)
+        public void SaveInventoryRecord(InventoryModel item)
         {
             SqlDataAccess sql = new SqlDataAccess();
 
-            var output = sql.LoadData<ProductModel, dynamic>("dbo.spProduct_GetById", new { Id = productId }, "TRMData").FirstOrDefault();
-
-            return output;
+            sql.SaveData("dbo.spInventory_Insert", item, "TRMData");
         }
     }
 }

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TRMDataManager.Models
+namespace TRMDataManager.Library.Models
 {
     public class SaleDetailModel
     {
-        public string ProductId { get; set; }
+        public int ProductId { get; set; }
         public int Quantity { get; set; }
     }
 }

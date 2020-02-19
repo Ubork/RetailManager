@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -87,8 +88,10 @@ namespace TRMDesktopUI.ViewModels
             }
         }
 
-        public async Task LogIn()
+        public async void LogIn()
         {
+            //var watch = new Stopwatch();
+            //watch.Start();
             try
             {
                 var result = await _apiHelper.Authenticate(UserName, Password);
@@ -103,6 +106,8 @@ namespace TRMDesktopUI.ViewModels
             {
                 ErrorMessage = ex.Message;
             }
+            //watch.Stop();
+            //Console.WriteLine(watch.ElapsedMilliseconds);
         }
     }
 }
