@@ -10,6 +10,8 @@ using TRMDesktopUI.Library.Api;
 using TRMDesktopUI.Library.Helper;
 using AutoMapper;
 using TRMDesktopUI.Models;
+using System.Dynamic;
+using System.Windows;
 
 namespace TRMDesktopUI.ViewModels
 {
@@ -25,19 +27,53 @@ namespace TRMDesktopUI.ViewModels
         IConfigHelper _configHelper;
         ISaleEndpoint _saleEndpoint;
         IMapper _mapper;
+        private readonly StatusInfoViewModel _status;
+        private readonly IWindowManager _window;
+
         public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper,
-            ISaleEndpoint saleEndpoint, IMapper mapper)
+            ISaleEndpoint saleEndpoint, IMapper mapper, StatusInfoViewModel status, IWindowManager window)
         {
             _productEndpoint = productEndpoint;
             _configHelper = configHelper;
             _saleEndpoint = saleEndpoint;
             _mapper = mapper;
+            _status = status;
+            _window = window;
         }
 
         protected override async void OnViewLoaded(object view)
         {
-            await LoadProducts();
             base.OnViewLoaded(view);
+
+            try
+            {
+                await LoadProducts();
+
+            }
+            catch (Exception ex)
+            {
+                dynamic settings = new ExpandoObject();
+                settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                settings.ResizeMode = ResizeMode.NoResize;
+                settings.Title = "System Error";
+
+                switch (ex.Message)
+                {
+                    case "Unauthorized" :
+                        _status.UpdateMessage("Unauthorized Access", "You donot have permission to interact with the Sales Form");
+                        _window.ShowDialog(_status, null, settings);
+                        break;
+
+                    default :
+                        _status.UpdateMessage("Fatal Exception", ex.Message);
+                        _window.ShowDialog(_status, null, settings);
+                        break;
+                }
+
+
+                TryClose();
+            }
+
         }
 
         private async Task LoadProducts()
@@ -214,12 +250,12 @@ namespace TRMDesktopUI.ViewModels
 
             ProductDisplayModel restockItem = Products.FirstOrDefault(x => x.Equals(SelectedItemToRemove.Product));
             restockItem.QuantityInStock += ItemQuantity;
-            
+
             if (SelectedItemToRemove.QuantityInCart == 0)
             {
                 Cart.Remove(SelectedItemToRemove);
             }
-            
+
             ItemQuantity = 1;
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
