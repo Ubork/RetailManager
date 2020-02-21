@@ -21,7 +21,6 @@ namespace TRMDesktopUI.Views
     {
         public ShellView()
         {
-            
             InitializeComponent();
         }
     }

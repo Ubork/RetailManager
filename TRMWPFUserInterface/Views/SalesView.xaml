@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TRMDesktopUI.Views"
+             xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
+
              mc:Ignorable="d" 
-             Background="White" FontSize="24"
+             Background="White" FontSize="24" 
              d:DesignHeight="550" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -44,7 +46,7 @@
                         <StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Price: " FontSize="14"/>
-                                <TextBlock Text="{Binding RetailPrice, StringFormat='{}{0:C}'}" FontSize="14"/>
+                                <TextBlock Text="{Binding RetailPrice, StringFormat='{}{0:C}', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" FontSize="14"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="5 0 0 0">
                                 <TextBlock Text="In Stock: " FontSize="14"/>

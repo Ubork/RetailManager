@@ -23,6 +23,12 @@ namespace TRMDesktopUI.ViewModels
             _user = user;
             _apiHelper = apiHelper;
 
+            System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = new System.Globalization.CultureInfo("hu-HU");
+            System.Globalization.CultureInfo.DefaultThreadCurrentCulture = new System.Globalization.CultureInfo("hu-HU");
+
+            System.Globalization.CultureInfo.CurrentUICulture = new System.Globalization.CultureInfo("hu-HU");
+            System.Globalization.CultureInfo.CurrentCulture = new System.Globalization.CultureInfo("hu-HU");
+
             _events.Subscribe(this);
 
             ActivateItem(IoC.Get<LoginViewModel>()) ;
