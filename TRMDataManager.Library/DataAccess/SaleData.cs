@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TRMDataManager.Library.Internal.DataAccess;
 using TRMDataManager.Library.Models;
 
@@ -47,11 +45,11 @@ namespace TRMDataManager.Library.DataAccess
             sale.Total = sale.SubTotal + sale.Tax;
 
             //Save the SaleModel
-            using (SqlDataAccess sql = new SqlDataAccess())
+            using (SqlDataAccess sql = new SqlDataAccess("TRMData"))
             {
                 try
                 {
-                    sql.StartTransaction("TRMData");
+                    sql.StartTransaction();
                     sql.SaveDataInTransaction("dbo.spSale_Insert", sale);
                     sale.Id = sql.LoadDataInTransaction<int, dynamic>("spSale_Lookup", new { sale.CashierId, sale.SaleDate }).FirstOrDefault();
                     foreach (var item in details)
@@ -70,14 +68,11 @@ namespace TRMDataManager.Library.DataAccess
         }
         public List<SaleReportModel> GetSaleReport()
         {
-            SqlDataAccess sql = new SqlDataAccess();
+            SqlDataAccess sql = new SqlDataAccess("TRMData");
 
-            var output = sql.LoadData<SaleReportModel, dynamic>("dbo.spSale_SaleReport", new { }, "TRMData");
+            var output = sql.LoadData<SaleReportModel>("dbo.spSale_SaleReport");
 
             return output;
         }
-
     }
-
-    
 }

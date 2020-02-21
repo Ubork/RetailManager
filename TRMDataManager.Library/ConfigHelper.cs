@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
+using System.Globalization;
 
 namespace TRMDataManager.Library
 {
@@ -11,16 +7,14 @@ namespace TRMDataManager.Library
     {
         public static decimal GetTaxRate()
         {
-            string rateText = ConfigurationManager.AppSettings["taxRate"];
+            string taxRate = ConfigurationManager.AppSettings["taxRate"];
 
-            bool IsValidTaxRate = Decimal.TryParse(rateText, out decimal output);
-
-            if (!IsValidTaxRate)
+            if (decimal.TryParse(taxRate, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal validTaxRate))
             {
-                throw new ConfigurationErrorsException("The tax rate is not set up properly");
+                return validTaxRate;
             }
 
-            return output;
+            throw new ConfigurationErrorsException("The tax rate is not set up properly");
         }
     }
 }
