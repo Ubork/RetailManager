@@ -80,7 +80,8 @@ namespace TRMDataManager.Library.Internal.DataAccess
 
         public void Dispose()
         {
-            _connection?.Close();
+            _connection?.Dispose();
+            _transaction.Dispose();
         }
     }
 }

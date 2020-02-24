@@ -15,7 +15,7 @@ namespace TRMDataManager.Controllers
     [Authorize]
     public class SaleController : ApiController
     {
-        [Authorize(Roles = "Cashier")]
+        [Authorize(Roles = "Cashier,Manager")]
         [HttpPost]
         public void Post(SaleModel sale)
         {

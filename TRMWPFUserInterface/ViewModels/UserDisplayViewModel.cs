@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using AutoMapper;
+using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +18,13 @@ namespace TRMDesktopUI.ViewModels
         private readonly StatusInfoViewModel _status;
         private readonly IWindowManager _window;
         private readonly IUserEndpoint _userEndpoint;
+        private readonly IMapper _mapper;
+        private UserModel _selectedUser;
+        private string _selectedUserName;
+        private BindingList<string> _selectedUsersRoles;
+        private BindingList<string> _selectedUsersAvailableRoles = new BindingList<string>();
+        private string _selectedUsersRoleToRemove;
+        private string _selectedAvailableRoleToAdd;
 
         BindingList<UserModel> _users;
 
@@ -30,13 +38,111 @@ namespace TRMDesktopUI.ViewModels
             }
         }
 
-        public UserDisplayViewModel(StatusInfoViewModel status, IWindowManager window, IUserEndpoint userEndpoint)
+        public UserModel SelectedUser
+        {
+            get { return _selectedUser; }
+            set 
+            { 
+                _selectedUser = value;
+                SelectedUserName = value.Email;
+                SelectedUsersRoles = new BindingList<string>(value.Roles.Select(x => x.Value).ToList());
+                LoadRoles();        //This needs to be awaited - to be addressed later
+
+                NotifyOfPropertyChange(() => SelectedUser);
+            }
+        }
+        public string SelectedUsersRoleToRemove
+        {
+            get { return _selectedUsersRoleToRemove; }
+            set 
+            {
+                _selectedUsersRoleToRemove = value;
+                NotifyOfPropertyChange(() => SelectedUsersRoleToRemove);
+                NotifyOfPropertyChange(() => Users);
+            }
+        }
+        public string SelectedAvailableRoleToAdd
+        {
+            get { return _selectedAvailableRoleToAdd; }
+            set 
+            {
+                _selectedAvailableRoleToAdd = value;
+                NotifyOfPropertyChange(() => SelectedAvailableRoleToAdd);
+                NotifyOfPropertyChange(() => Users);
+            }
+        }
+        public string SelectedUserName
+        {
+            get 
+            {
+                return _selectedUserName;
+            }
+            set 
+            {
+                _selectedUserName = value;
+                NotifyOfPropertyChange(()=> SelectedUserName);
+            }
+        }
+        public BindingList<string> SelectedUsersRoles
+        {
+            get { return _selectedUsersRoles; }
+            set 
+            {
+                _selectedUsersRoles = value;
+                NotifyOfPropertyChange(() => SelectedUsersRoles);
+                NotifyOfPropertyChange(() => SelectedUser);
+            }
+        }
+        public BindingList<string> SelectedUsersAvailableRoles
+        {
+            get { return _selectedUsersAvailableRoles; }
+            set
+            {
+                _selectedUsersAvailableRoles = value;
+                NotifyOfPropertyChange(() => SelectedUsersAvailableRoles);
+            }
+        }
+        private async Task LoadRoles()
+        {
+            var roles = await _userEndpoint.GetAllRoles();
+            _selectedUsersAvailableRoles.Clear();
+
+            foreach (var role in roles)
+            {
+                if (!SelectedUsersRoles.Contains(role.Value))
+                {
+                    SelectedUsersAvailableRoles.Add(role.Value);
+                }
+            }
+        }
+        public async void AddSelectedRole()
+        {
+            UserRolePairModel pairing = new UserRolePairModel(SelectedUser.Id, SelectedAvailableRoleToAdd);
+            string role = SelectedAvailableRoleToAdd;
+
+            await _userEndpoint.AddUserToRole(pairing);
+            
+            SelectedUsersRoles.Add(role);
+            SelectedUsersAvailableRoles.Remove(role);
+        }
+        public async void RemoveSelectedRole()
+        {
+            UserRolePairModel pairing = new UserRolePairModel(SelectedUser.Id, SelectedUsersRoleToRemove);
+            string role = SelectedUsersRoleToRemove;
+            
+            await _userEndpoint.RemoveUserFromRole(pairing);
+
+            SelectedUsersRoles.Remove(role);
+            SelectedUsersAvailableRoles.Add(role);
+        }
+        public UserDisplayViewModel(StatusInfoViewModel status, IWindowManager window, 
+            IUserEndpoint userEndpoint, IMapper mapper)
         {
             _status = status;
             _window = window;
             _userEndpoint = userEndpoint;
+            _mapper = mapper;
         }
-
         protected override async void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
@@ -44,7 +150,6 @@ namespace TRMDesktopUI.ViewModels
             try
             {
                 await LoadUsers();
-
             }
             catch (Exception ex)
             {
@@ -71,7 +176,8 @@ namespace TRMDesktopUI.ViewModels
         private async Task LoadUsers()
         {
             var userList = await _userEndpoint.GetAll();
-            Users = new BindingList<UserModel>(userList);
+            var users = _mapper.Map<List<UserModel>>(userList);
+            Users = new BindingList<UserModel>(users);
         }
     }
 }
