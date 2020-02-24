@@ -18,13 +18,13 @@ namespace TRMDesktopUI.ViewModels
         private string _password = "pwD1234.";
         private IAPIHelper _apiHelper;
         private IEventAggregator _events;
+        private string _errorMessage;
 
         public LoginViewModel(IAPIHelper apiHelper, IEventAggregator events)
         {
             _apiHelper = apiHelper;
             _events = events;
         }
-
         public string UserName
         {
             get { return _userName; }
@@ -35,7 +35,6 @@ namespace TRMDesktopUI.ViewModels
                 NotifyOfPropertyChange(() => CanLogIn);
             }
         }
-
         public string Password 
         {
             get { return _password; }
@@ -59,9 +58,6 @@ namespace TRMDesktopUI.ViewModels
                 
                 return output; }
         }
-
-        private string _errorMessage;
-
         public string ErrorMessage
         {
             get { return _errorMessage; }
@@ -72,8 +68,6 @@ namespace TRMDesktopUI.ViewModels
                 NotifyOfPropertyChange(() => IsErrorVisible);
             }
         }
-
-
         public bool CanLogIn
         {
             get
@@ -87,7 +81,6 @@ namespace TRMDesktopUI.ViewModels
                 return output;
             }
         }
-
         public async void LogIn()
         {
             //var watch = new Stopwatch();

@@ -35,6 +35,7 @@ namespace TRMApi.Controllers
 
         [Authorize(Roles = "Admin,Manager")]
         [Route("GetSalesReport")]
+        [HttpGet]
         public List<SaleReportModel> GetSaleReports()
         {
             SaleData data = new SaleData(_config);

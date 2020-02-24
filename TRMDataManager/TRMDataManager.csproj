@@ -331,10 +331,6 @@
       <Project>{A6A43726-05C0-48E4-87D9-1E82E0E70F6D}</Project>
       <Name>TRMDataManager.Library</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TRMDesktopUI.Library\TRMDesktopUI.Library.csproj">
-      <Project>{4F9C1600-9B6D-42BE-A5BE-FCB3FC978D66}</Project>
-      <Name>TRMDesktopUI.Library</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
