@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using TRMApi.Data;
+using TRMApi.Models;
 
 namespace TRMApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TokenController : Controller
+    public class TokenController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
@@ -29,10 +32,27 @@ namespace TRMApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(string username, string password, string grant_type)
         {
-            bool x = await IsValidUserNameAndPassword(username, password);
+            using (var reader = new StreamReader(Request.Body))
+            {
+                try
+                {
+                    var body = await reader.ReadToEndAsync();
 
-            var output = x ? new ObjectResult(await GenerateToken(username)) : (IActionResult)BadRequest();
-            return output;
+                    TokenInput o = new TokenInput();
+                    o = JsonSerializer.Deserialize<TokenInput>(body);
+
+                    bool x = await IsValidUserNameAndPassword(o.UserName, o.Password);
+
+                    var output = x ? new ObjectResult(await GenerateToken(o.UserName)) : (IActionResult)BadRequest();
+                    return output;
+                    throw new NotImplementedException();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }
+
         }
         private async Task<bool> IsValidUserNameAndPassword(string username, string password)
         {
@@ -46,7 +66,7 @@ namespace TRMApi.Controllers
                         join r in _context.Roles on ur.RoleId equals r.Id
                         where ur.UserId == user.Id
                         select new { ur.UserId, ur.RoleId, r.Name };
-            var claims = new List<Claim>
+            var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, userName)
                 , new Claim(ClaimTypes.NameIdentifier, user.Id)

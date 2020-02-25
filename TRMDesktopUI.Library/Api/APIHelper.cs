@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -39,14 +40,17 @@ namespace TRMDesktopUI.Helpers
 
         public async Task<AuthenticatedUser> Authenticate(string username, string password)
         {
-            var data = new FormUrlEncodedContent(new[]
+            var data = JsonConvert.SerializeObject(new
             {
-                //new KeyValuePair<string, string>(username, password)
-                new KeyValuePair<string, string>("grant_type", "password"),
-                new KeyValuePair<string, string>("username", username),
-                new KeyValuePair<string, string>("password", password),
+                Grant_Type = "password",
+                UserName = username,
+                Password = password
             });
-            using (HttpResponseMessage response = await _apiClient.PostAsync("/token", data))
+
+            var buffer = Encoding.UTF8.GetBytes(data);
+            var byteContent = new ByteArrayContent(buffer);
+
+            using (HttpResponseMessage response = await _apiClient.PostAsync("/token", byteContent))
             {
                 if (response.IsSuccessStatusCode)
                 {
