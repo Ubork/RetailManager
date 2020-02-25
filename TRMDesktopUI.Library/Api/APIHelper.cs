@@ -1,11 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Configuration;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using TRMDesktopUI.Library.Api;
 using TRMDesktopUI.Library.Models;
@@ -24,8 +19,8 @@ namespace TRMDesktopUI.Helpers
         }
 
         public HttpClient ApiClient
-        { 
-            get { return _apiClient; } 
+        {
+            get { return _apiClient; }
         }
 
         private void InitializeClient()
@@ -40,17 +35,14 @@ namespace TRMDesktopUI.Helpers
 
         public async Task<AuthenticatedUser> Authenticate(string username, string password)
         {
-            var data = JsonConvert.SerializeObject(new
+            var data = new
             {
                 Grant_Type = "password",
                 UserName = username,
                 Password = password
-            });
+            };
 
-            var buffer = Encoding.UTF8.GetBytes(data);
-            var byteContent = new ByteArrayContent(buffer);
-
-            using (HttpResponseMessage response = await _apiClient.PostAsync("/token", byteContent))
+            using (HttpResponseMessage response = await _apiClient.PostAsJsonAsync("/token", data))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -69,7 +61,7 @@ namespace TRMDesktopUI.Helpers
             _apiClient.DefaultRequestHeaders.Clear();
         }
 
-        public async Task GetLoggedInUserInfo(string token) 
+        public async Task GetLoggedInUserInfo(string token)
         {
             _apiClient.DefaultRequestHeaders.Clear();
             _apiClient.DefaultRequestHeaders.Accept.Clear();
