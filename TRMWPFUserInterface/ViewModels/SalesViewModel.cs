@@ -30,8 +30,13 @@ namespace TRMDesktopUI.ViewModels
         private readonly StatusInfoViewModel _status;
         private readonly IWindowManager _window;
 
-        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper,
-            ISaleEndpoint saleEndpoint, IMapper mapper, StatusInfoViewModel status, IWindowManager window)
+        public SalesViewModel(
+            IProductEndpoint productEndpoint,
+            IConfigHelper configHelper,
+            ISaleEndpoint saleEndpoint,
+            IMapper mapper,
+            StatusInfoViewModel status,
+            IWindowManager window)
         {
             _productEndpoint = productEndpoint;
             _configHelper = configHelper;
@@ -70,19 +75,16 @@ namespace TRMDesktopUI.ViewModels
                         break;
                 }
 
-
                 await TryCloseAsync();
             }
 
         }
-
         private async Task LoadProducts()
         {
             var productList = await _productEndpoint.GetAll();
             var products = _mapper.Map<List<ProductDisplayModel>>(productList);
             Products = new BindingList<ProductDisplayModel>(products);
         }
-
         public BindingList<ProductDisplayModel> Products
         {
             get { return _products; }
@@ -92,7 +94,6 @@ namespace TRMDesktopUI.ViewModels
                 NotifyOfPropertyChange(() => Products);
             }
         }
-
         public ProductDisplayModel SelectedProduct
         {
             get { return _selectedProduct; }
@@ -103,7 +104,6 @@ namespace TRMDesktopUI.ViewModels
                 NotifyOfPropertyChange(() => CanAddToCart);
             }
         }
-
         public CartItemDisplayModel SelectedItemToRemove
         {
             get { return _selectedItemToRemove; }
@@ -114,7 +114,6 @@ namespace TRMDesktopUI.ViewModels
                 NotifyOfPropertyChange(() => CanRemoveFromCart);
             }
         }
-
         public int ItemQuantity
         {
             get { return _itemQuantity; }
@@ -125,7 +124,6 @@ namespace TRMDesktopUI.ViewModels
                 NotifyOfPropertyChange(() => CanAddToCart);
             }
         }
-
         private async void ResetSalesViewModel()
         {
             Cart = new BindingList<CartItemDisplayModel>();
@@ -137,7 +135,6 @@ namespace TRMDesktopUI.ViewModels
             NotifyOfPropertyChange(() => Total);
             NotifyOfPropertyChange(() => CanCheckOut);
         }
-
         public BindingList<CartItemDisplayModel> Cart
         {
             get { return _cart; }
@@ -147,7 +144,6 @@ namespace TRMDesktopUI.ViewModels
                 NotifyOfPropertyChange(() => Cart);
             }
         }
-
         public string SubTotal
         {
             get
@@ -155,7 +151,6 @@ namespace TRMDesktopUI.ViewModels
                 return CalculateSubTotal().ToString("C");
             }
         }
-
         private decimal CalculateSubTotal()
         {
             decimal subTotal = 0;
@@ -165,7 +160,6 @@ namespace TRMDesktopUI.ViewModels
             }
             return subTotal;
         }
-
         public string Tax
         {
             get
@@ -173,7 +167,6 @@ namespace TRMDesktopUI.ViewModels
                 return CalculateTax().ToString("C");
             }
         }
-
         private decimal CalculateTax()
         {
             decimal taxAmount = 0;
@@ -182,17 +175,8 @@ namespace TRMDesktopUI.ViewModels
             taxAmount = Cart.Where(x => x.Product.IsTaxable)
                 .Sum(x => x.Product.RetailPrice * x.QuantityInCart * taxRate * (decimal)0.01);
 
-            //foreach (var item in Cart)
-            //{
-            //	if (item.Product.IsTaxable)
-            //	{
-            //		taxAmount += (item.Product.RetailPrice * item.QuantityInCart * taxRate * (decimal)0.01);
-            //	}
-            //}
-
             return taxAmount;
         }
-
         public string Total
         {
             get
@@ -201,7 +185,6 @@ namespace TRMDesktopUI.ViewModels
                 return total.ToString("C");
             }
         }
-
         public void AddToCart()
         {
             CartItemDisplayModel existingItem = Cart.FirstOrDefault(x => x.Product == SelectedProduct);
@@ -225,9 +208,7 @@ namespace TRMDesktopUI.ViewModels
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
             NotifyOfPropertyChange(() => CanCheckOut);
-
         }
-
         public bool CanAddToCart
         {
             get
@@ -243,7 +224,6 @@ namespace TRMDesktopUI.ViewModels
                 return output;
             }
         }
-
         public void RemoveFromCart()
         {
             SelectedItemToRemove.QuantityInCart -= ItemQuantity;
@@ -262,7 +242,6 @@ namespace TRMDesktopUI.ViewModels
             NotifyOfPropertyChange(() => Total);
             NotifyOfPropertyChange(() => CanCheckOut);
         }
-
         public bool CanRemoveFromCart
         {
             get
@@ -292,7 +271,6 @@ namespace TRMDesktopUI.ViewModels
                 return output;
             }
         }
-
         public async void CheckOut()
         {
             SaleModel sale = new SaleModel();
@@ -310,7 +288,5 @@ namespace TRMDesktopUI.ViewModels
 
             ResetSalesViewModel();
         }
-
-
     }
 }

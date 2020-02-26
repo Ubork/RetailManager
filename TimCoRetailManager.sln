@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRMDataManager", "TRMDataManager\TRMDataManager.csproj", "{86D52F07-3C81-43F6-B11E-3689524FFBB2}"
-EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TRMData", "TRMData\TRMData.sqlproj", "{3DA01735-A4AD-4FC2-9A60-A9FD8281BACF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRMDesktopUI", "TRMWPFUserInterface\TRMDesktopUI.csproj", "{75FCB70A-B73D-41C5-94C9-27AFE1F7924B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRMDataManager.Library", "TRMDataManager.Library\TRMDataManager.Library.csproj", "{A6A43726-05C0-48E4-87D9-1E82E0E70F6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TRMDataManager.Library", "TRMDataManager.Library\TRMDataManager.Library.csproj", "{A6A43726-05C0-48E4-87D9-1E82E0E70F6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRMDesktopUI.Library", "TRMDesktopUI.Library\TRMDesktopUI.Library.csproj", "{4F9C1600-9B6D-42BE-A5BE-FCB3FC978D66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TRMDesktopUI.Library", "TRMDesktopUI.Library\TRMDesktopUI.Library.csproj", "{4F9C1600-9B6D-42BE-A5BE-FCB3FC978D66}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{89C5CDEC-9A77-4CD0-8008-334B47E660A7}"
 EndProject
@@ -19,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{AB3591B2-5AB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{C3A14B57-94FA-4262-B32F-79A4601319A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRMApi", "TRMApi\TRMApi.csproj", "{47030731-61BD-4853-A2C1-11742BAF17D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TRMApi", "TRMApi\TRMApi.csproj", "{47030731-61BD-4853-A2C1-11742BAF17D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,10 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{86D52F07-3C81-43F6-B11E-3689524FFBB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{86D52F07-3C81-43F6-B11E-3689524FFBB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{86D52F07-3C81-43F6-B11E-3689524FFBB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{86D52F07-3C81-43F6-B11E-3689524FFBB2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3DA01735-A4AD-4FC2-9A60-A9FD8281BACF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3DA01735-A4AD-4FC2-9A60-A9FD8281BACF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DA01735-A4AD-4FC2-9A60-A9FD8281BACF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
@@ -58,7 +52,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{86D52F07-3C81-43F6-B11E-3689524FFBB2} = {AB3591B2-5ABE-4D1E-BD66-6F5807AB2D70}
 		{3DA01735-A4AD-4FC2-9A60-A9FD8281BACF} = {89C5CDEC-9A77-4CD0-8008-334B47E660A7}
 		{75FCB70A-B73D-41C5-94C9-27AFE1F7924B} = {C3A14B57-94FA-4262-B32F-79A4601319A6}
 		{A6A43726-05C0-48E4-87D9-1E82E0E70F6D} = {AB3591B2-5ABE-4D1E-BD66-6F5807AB2D70}
