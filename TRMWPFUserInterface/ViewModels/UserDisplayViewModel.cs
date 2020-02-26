@@ -162,15 +162,15 @@ namespace TRMDesktopUI.ViewModels
                 {
                     case "Unauthorized":
                         _status.UpdateMessage("Unauthorized Access", "You donot have permission to interact with the Sales Form");
-                        _window.ShowDialog(_status, null, settings);
+                        await _window.ShowDialogAsync(_status, null, settings);
                         break;
 
                     default:
                         _status.UpdateMessage("Fatal Exception", ex.Message);
-                        _window.ShowDialog(_status, null, settings);
+                        await _window.ShowDialogAsync(_status, null, settings);
                         break;
                 }
-                TryClose();
+                await TryCloseAsync();
             }
         }
         private async Task LoadUsers()

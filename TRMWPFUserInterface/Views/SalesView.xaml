@@ -5,10 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TRMDesktopUI.Views"
              xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
-
              mc:Ignorable="d" 
-             Background="White" FontSize="24" 
-             d:DesignHeight="550" d:DesignWidth="800">
+             Background="White" 
+             FontSize="24" 
+             d:DesignHeight="550"
+             d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
@@ -35,9 +36,14 @@
                    Grid.ColumnSpan="3" Margin="0 0 0 20"/>
 
         <!-- Column 0-->
-        <TextBlock Text="Items" Grid.Row="1" Grid.Column="0" />
-        <ListBox x:Name="Products" Grid.Row="2" Grid.Column="0" 
-                 Grid.RowSpan="3" MinHeight="200" MinWidth="150"
+        <TextBlock Text="Items" Grid.Row="1" 
+                   Grid.Column="0" />
+        <ListBox x:Name="Products" 
+                 Grid.Row="2" 
+                 Grid.Column="0" 
+                 Grid.RowSpan="3" 
+                 MinHeight="200" 
+                 MinWidth="150"
                  SelectedItem="{Binding SelectedProduct}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -45,12 +51,17 @@
                         <TextBlock Text="{Binding ProductName}" />
                         <StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Price: " FontSize="14"/>
-                                <TextBlock Text="{Binding RetailPrice, StringFormat='{}{0:C}', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" FontSize="14"/>
+                                <TextBlock Text="Price: " 
+                                           FontSize="14"/>
+                                <TextBlock Text="{Binding RetailPrice, StringFormat='{}{0:C}', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" 
+                                           FontSize="14"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="5 0 0 0">
-                                <TextBlock Text="In Stock: " FontSize="14"/>
-                                <TextBlock Text="{Binding QuantityInStock}" FontSize="14"/>
+                            <StackPanel Orientation="Horizontal" 
+                                        Margin="5 0 0 0">
+                                <TextBlock Text="In Stock: " 
+                                           FontSize="14"/>
+                                <TextBlock Text="{Binding QuantityInStock}" 
+                                           FontSize="14"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
@@ -59,23 +70,33 @@
         </ListBox>
 
         <!-- Column 1-->
-        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="1"
+        <StackPanel Orientation="Vertical" 
+                    Grid.Row="2" 
+                    Grid.Column="1"
                     Margin="20 0">
             <TextBlock Text="Quantity" />
-            <TextBox x:Name="ItemQuantity" MinWidth="100" 
+            <TextBox x:Name="ItemQuantity" 
+                     MinWidth="100" 
                      Margin="0 0 0 10"/>
-            <Button x:Name="AddToCart" Content="Add to Cart" 
+            <Button x:Name="AddToCart" 
+                    Content="Add to Cart" 
                     Margin="0 0 0 30"
                     Padding="5"/>
-            <Button x:Name="RemoveFromCart" Content="Remove from Cart" 
+            <Button x:Name="RemoveFromCart" 
+                    Content="Remove from Cart" 
                     Padding="5"/>
         </StackPanel>
 
 
         <!-- Column 2-->
-        <TextBlock Text="Cart" Grid.Row="1" Grid.Column="2" />
-        <ListBox x:Name="Cart" Grid.Row="2" Grid.Column="2" 
-                 MinHeight="200" MinWidth="150"
+        <TextBlock Text="Cart" 
+                   Grid.Row="1"
+                   Grid.Column="2" />
+        <ListBox x:Name="Cart" 
+                 Grid.Row="2"
+                 Grid.Column="2" 
+                 MinHeight="200"
+                 MinWidth="150"
                  SelectedItem="{Binding SelectedItemToRemove}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -83,21 +104,35 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <DockPanel Grid.Row="3" Grid.Column="2" MinWidth="250">
-            <TextBlock Text="Subtotal: " Margin="0 0 15 0"/>
-            <TextBlock x:Name="SubTotal" Text="0,00 Ft" TextAlignment="Right" />
+        <DockPanel Grid.Row="3" 
+                   Grid.Column="2"
+                   MinWidth="250">
+            <TextBlock Text="Subtotal: " 
+                       Margin="0 0 15 0"/>
+            <TextBlock x:Name="SubTotal" 
+                       Text="0,00 Ft" 
+                       TextAlignment="Right" />
         </DockPanel>
-        <DockPanel Grid.Row="4" Grid.Column="2">
+        <DockPanel Grid.Row="4"
+                   Grid.Column="2">
             <TextBlock Text="Tax: " />
-            <TextBlock x:Name="Tax" Text="0,00 Ft" TextAlignment="Right" />
+            <TextBlock x:Name="Tax"
+                       Text="0,00 Ft" 
+                       TextAlignment="Right" />
         </DockPanel>
-        <DockPanel Grid.Row="5" Grid.Column="2">
+        <DockPanel Grid.Row="5" 
+                   Grid.Column="2">
             <TextBlock Text="Total: " />
-            <TextBlock x:Name="Total" Text="0,00 Ft" TextAlignment="Right" />
+            <TextBlock x:Name="Total"
+                       Text="0,00 Ft" 
+                       TextAlignment="Right" />
         </DockPanel>
-
-        <Button x:Name="CheckOut" Grid.Row="6" Grid.Column="2" 
-                Content="Check Out" Margin="0 20 0 0" Padding="5"/>
+        <Button x:Name="CheckOut" 
+                Grid.Row="6"
+                Grid.Column="2" 
+                Content="Check Out"
+                Margin="0 20 0 0" 
+                Padding="5"/>
 
     </Grid>
 </UserControl>
