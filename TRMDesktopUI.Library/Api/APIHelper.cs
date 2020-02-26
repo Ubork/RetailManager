@@ -40,17 +40,14 @@ namespace TRMDesktopUI.Helpers
 
         public async Task<AuthenticatedUser> Authenticate(string username, string password)
         {
-            var data = JsonConvert.SerializeObject(new
+            var data = new
             {
                 Grant_Type = "password",
                 UserName = username,
                 Password = password
-            });
+            };
 
-            var buffer = Encoding.UTF8.GetBytes(data);
-            var byteContent = new ByteArrayContent(buffer);
-
-            using (HttpResponseMessage response = await _apiClient.PostAsync("/token", byteContent))
+            using (HttpResponseMessage response = await _apiClient.PostAsJsonAsync("/token", data))
             {
                 if (response.IsSuccessStatusCode)
                 {
