@@ -82,7 +82,6 @@ namespace TRMDataManager.Library.Internal.DataAccess
         {
             _transaction?.Rollback();
             _connection?.Close();
-
         }
 
         public void Dispose()
