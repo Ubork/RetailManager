@@ -23,7 +23,8 @@ namespace TRMApi.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public TokenController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public TokenController(ApplicationDbContext context,
+            UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -72,8 +73,7 @@ namespace TRMApi.Controllers
 
         var output = new
         {
-            Access_Token = new JwtSecurityTokenHandler().WriteToken(token)
-            ,
+            Access_Token = new JwtSecurityTokenHandler().WriteToken(token),
             Username = userName
         };
 

@@ -11,7 +11,7 @@ namespace TRMDataManager.Library
     {
         public static decimal GetTaxRate()
         {
-            string rateText = ConfigurationManager.AppSettings["taxRate"];
+            string rateText = "8,75";  // Replace hardcoded value later
 
             bool IsValidTaxRate = Decimal.TryParse(rateText, out decimal output);
 
